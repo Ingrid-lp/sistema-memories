@@ -1,0 +1,1116 @@
+/* Reset e Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Fonte mais moderna */
+  line-height: 1.6;
+  color: #1a1a1a;
+  background-color: #f0f2f5; /* Fundo padrão mais claro */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Loading Screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #f0f2f5; /* Fundo mais claro */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #5f6368;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(95, 99, 104, 0.3); /* Cor do spinner ajustada */
+  border-top: 3px solid #1a1a1a; /* Cor do spinner ajustada */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Auth Screen - Melhorias visuais */
+.auth-screen {
+  min-height: 100vh;
+  background: #f0f2f5; /* Fundo mais claro e suave */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-container {
+  background: white;
+  border-radius: 12px; /* Bordas mais arredondadas */
+  padding: 40px; /* Mais padding */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Sombra mais suave e moderna */
+  width: 100%;
+  max-width: 400px; /* Ligeiramente mais largo */
+  text-align: center;
+  border: 1px solid #e0e0e0; /* Borda sutil */
+}
+
+.auth-header {
+  margin-bottom: 32px; /* Mais espaçamento */
+}
+
+.auth-header h1 {
+  font-size: 20px; /* Tamanho maior */
+  color: #1a1a1a;
+  font-weight: 600; /* Mais negrito */
+  line-height: 1.3;
+}
+
+/* Botão Google - Melhorias visuais */
+.google-btn {
+  width: 100%;
+  padding: 12px 16px; /* Padding ajustado */
+  border: 1px solid #dadce0;
+  border-radius: 8px; /* Bordas mais arredondadas */
+  background: white;
+  color: #3c4043;
+  font-size: 15px; /* Tamanho da fonte ajustado */
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px; /* Mais espaçamento */
+  transition: all 0.2s ease;
+  min-height: 48px; /* Altura mínima maior */
+}
+
+.google-btn:hover {
+  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+  border-color: #c5c5c5;
+}
+
+.google-icon {
+  width: 20px; /* Ícone ligeiramente maior */
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Divisor "or" - Como no Figma */
+.auth-divider {
+  margin: 24px 0; /* Mais espaçamento */
+  text-align: center;
+  position: relative;
+  color: #9aa0a6; /* Cor mais suave */
+  font-size: 14px;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e0e0e0; /* Cor mais suave */
+  z-index: 1;
+}
+
+.auth-divider span {
+  background: white;
+  padding: 0 16px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Formulário - Melhorias visuais */
+.auth-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px; /* Mais espaçamento */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px; /* Mais espaçamento */
+  font-weight: 500; /* Mais negrito */
+  color: #5f6368;
+  font-size: 13px; /* Tamanho ajustado */
+  text-transform: uppercase;
+  letter-spacing: 0.5px; /* Letter spacing ajustado */
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 14px 18px; /* Padding ajustado */
+  border: 1px solid #dadce0;
+  border-radius: 8px; /* Bordas mais arredondadas */
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 50px; /* Altura mínima maior */
+  background: white;
+  color: #1a1a1a;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4285f4; /* Azul do Google */
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2); /* Sombra de foco */
+}
+
+/* Botão Email - Preto como no Figma, com melhorias */
+.email-btn {
+  width: 100%;
+  padding: 14px 24px; /* Padding ajustado */
+  border-radius: 8px; /* Bordas mais arredondadas */
+  font-size: 16px; /* Tamanho da fonte ajustado */
+  font-weight: 600; /* Mais negrito */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px; /* Altura mínima maior */
+  background: #1a1a1a; /* Preto */
+  color: white;
+}
+
+.email-btn:hover {
+  background: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.email-btn:disabled {
+  opacity: 0.5; /* Mais suave */
+  cursor: not-allowed;
+}
+
+/* Dashboard - Fundo claro */
+.dashboard-screen {
+  min-height: 100vh;
+  background: #f0f2f5; /* Fundo mais claro */
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  background: white;
+  border-bottom: 1px solid #e0e0e0; /* Borda mais suave */
+  padding: 0 24px; /* Padding ajustado */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px; /* Altura maior */
+  max-width: 1280px; /* Largura máxima maior */
+  margin: 0 auto;
+}
+
+/* Header Left - Organização correta */
+.header-left {
+  display: flex;
+  align-items: center;
+  /* Removido: gap: 16px; */
+  min-height: 72px;
+  flex-grow: 1; /* Garante que ocupe o espaço disponível para centralizar o h1 */
+}
+
+/* Título centralizado e botão do menu à esquerda */
+.header-left h1 {
+  font-size: 22px; /* Tamanho maior */
+  color: #1a1a1a;
+  font-weight: 600; /* Mais negrito */
+  margin: 0 auto; /* Centraliza o h1 horizontalmente */
+  line-height: 1;
+}
+
+/* Botão do menu - do lado do título */
+.menu-button {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border: 1px solid #dadce0; /* Borda mais fina */
+  font-size: 18px; /* Ícone maior */
+  color: #5f6368; /* Cor mais suave */
+  cursor: pointer;
+  padding: 10px; /* Padding ajustado */
+  border-radius: 8px; /* Bordas mais arredondadas */
+  transition: all 0.2s ease;
+  width: 44px; /* Tamanho maior */
+  height: 44px;
+  flex-shrink: 0;
+  margin-right: auto; /* Empurra o botão para a esquerda e o h1 para o centro */
+}
+
+.menu-button:hover {
+  background: #e8eaed;
+  border-color: #c5c5c5;
+  color: #1a1a1a;
+}
+
+.menu-button i {
+  font-size: 18px; /* Ícone maior */
+  line-height: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Mais espaçamento */
+}
+
+/* Removido do header:
+.user-name {
+  font-weight: 500;
+  color: #5f6368;
+  font-size: 15px;
+}
+*/
+
+/* Navegação */
+.dashboard-nav {
+  background: white;
+  border-bottom: 1px solid #e0e0e0; /* Borda mais suave */
+  padding: 0 24px; /* Padding ajustado */
+  position: sticky;
+  top: 72px; /* Ajustado para nova altura do header */
+  z-index: 99;
+  max-width: 1280px; /* Largura máxima maior */
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+}
+
+.nav-btn {
+  padding: 18px 28px; /* Padding ajustado */
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 15px; /* Tamanho ajustado */
+  color: #5f6368;
+  border-bottom: 3px solid transparent; /* Borda mais grossa */
+  transition: all 0.2s ease;
+  font-weight: 600; /* Mais negrito */
+}
+
+.nav-btn.active {
+  color: #1a1a1a;
+  border-bottom-color: #1a1a1a;
+}
+
+.nav-btn:hover {
+  color: #1a1a1a;
+  background: #f8f9fa;
+}
+
+.nav-btn i {
+  margin-right: 10px; /* Mais espaçamento */
+}
+
+/* Seções */
+.dashboard-section {
+  display: none;
+  flex: 1;
+  padding: 32px 24px; /* Mais padding */
+  max-width: 1280px; /* Largura máxima maior */
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-section.active {
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px; /* Mais espaçamento */
+}
+
+.section-header h2 {
+  font-size: 28px; /* Tamanho maior */
+  color: #1a1a1a;
+  font-weight: 600; /* Mais negrito */
+}
+
+.section-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Mais espaçamento */
+}
+
+/* Botões */
+.btn-primary {
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 14px 28px; /* Padding ajustado */
+  border-radius: 8px; /* Bordas mais arredondadas */
+  font-size: 15px; /* Tamanho ajustado */
+  font-weight: 600; /* Mais negrito */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Mais espaçamento */
+  min-height: 48px; /* Altura mínima maior */
+}
+
+.btn-primary:hover {
+  background: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #5f6368; /* Cor mais suave */
+  border: 1px solid #dadce0;
+  padding: 10px 20px; /* Padding ajustado */
+  border-radius: 8px; /* Bordas mais arredondadas */
+  font-size: 15px; /* Tamanho ajustado */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Mais espaçamento */
+  min-height: 44px; /* Altura mínima maior */
+}
+
+.btn-outline:hover {
+  background: #f8f9fa;
+  border-color: #c5c5c5;
+  color: #1a1a1a;
+}
+
+/* Grids */
+.images-grid,
+.albums-grid {
+  column-count: 1;
+  column-gap: 24px;
+  column-fill: balance;
+}
+
+@media (min-width: 768px) {
+  .images-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .images-grid {
+    column-count: 3;
+  }
+}
+
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Cards */
+.image-card,
+.album-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e0e0e0;
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+.image-card:hover,
+.album-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.image-preview-container,
+.album-preview-container {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.image-preview-container img,
+.album-preview-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px; /* Mais padding */
+  color: #5f6368;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state i {
+  font-size: 80px; /* Ícone maior */
+  margin-bottom: 24px; /* Mais espaçamento */
+  display: block;
+  color: #e0e0e0; /* Cor mais suave */
+}
+
+.empty-state h3 {
+  font-size: 20px; /* Tamanho maior */
+  margin-bottom: 12px; /* Mais espaçamento */
+  color: #1a1a1a;
+  font-weight: 600; /* Mais negrito */
+}
+
+.empty-state p {
+  font-size: 15px; /* Tamanho ajustado */
+  line-height: 1.6;
+}
+
+/* Modais */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6); /* Fundo mais escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px; /* Bordas mais arredondadas */
+  width: 100%;
+  max-width: 520px; /* Ligeiramente mais largo */
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 28px 0; /* Mais padding */
+  margin-bottom: 24px; /* Mais espaçamento */
+}
+
+.modal-header h3 {
+  font-size: 20px; /* Tamanho maior */
+  color: #1a1a1a;
+  font-weight: 600; /* Mais negrito */
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 28px; /* Ícone maior */
+  cursor: pointer;
+  color: #5f6368;
+  padding: 6px; /* Padding ajustado */
+  width: 36px; /* Tamanho maior */
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px; /* Bordas mais arredondadas */
+}
+
+.modal-close:hover {
+  background: #f0f2f5;
+  color: #1a1a1a;
+}
+
+.modal form {
+  padding: 0 28px 28px; /* Mais padding */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px; /* Mais espaçamento */
+  margin-top: 32px; /* Mais espaçamento */
+  padding-top: 24px; /* Mais padding */
+  border-top: 1px solid #e0e0e0; /* Borda mais suave */
+}
+
+/* Image Preview */
+.image-preview {
+  margin-top: 16px; /* Mais espaçamento */
+  border-radius: 12px; /* Bordas mais arredondadas */
+  overflow: hidden;
+  max-height: 240px; /* Altura máxima maior */
+  border: 1px solid #e0e0e0;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Error Messages */
+.error-message {
+  background: #fef2f2; /* Fundo mais suave */
+  color: #ef4444; /* Cor mais suave */
+  padding: 14px 18px; /* Padding ajustado */
+  border-radius: 8px; /* Bordas mais arredondadas */
+  margin-bottom: 20px; /* Mais espaçamento */
+  font-size: 14px;
+  border-left: 4px solid #ef4444; /* Borda mais suave */
+}
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  z-index: 1001;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+}
+
+.sidebar-menu.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sidebar-overlay {
+  position: fixed; /* Alterado para fixed para cobrir toda a viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  z-index: 1000; /* Abaixo do sidebar-content */
+}
+
+.sidebar-content {
+  position: relative; /* Alterado para relative para não ser afetado pelo overlay */
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  z-index: 1001; /* Acima do overlay */
+}
+
+.sidebar-menu.active .sidebar-content {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px; /* Mais padding */
+  border-bottom: 1px solid #e0e0e0; /* Borda mais suave */
+  background: #f8f9fa;
+}
+
+.sidebar-header h3 {
+  font-size: 20px; /* Tamanho maior */
+  color: #1a1a1a;
+  font-weight: 600; /* Mais negrito */
+  margin: 0;
+}
+
+.menu-close {
+  background: none;
+  border: none;
+  font-size: 24px; /* Ícone maior */
+  color: #5f6368;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px; /* Bordas mais arredondadas */
+  transition: all 0.2s ease;
+}
+
+.menu-close:hover {
+  background: #e8eaed;
+  color: #1a1a1a;
+}
+
+/* Nova seção para informações do usuário no sidebar */
+.user-info-sidebar {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 16px;
+}
+
+.user-info-sidebar .user-name {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 16px;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+  padding: 20px 0; /* Mais padding */
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 14px 24px; /* Mais padding */
+  border: none;
+  background: none;
+  color: #1a1a1a;
+  font-size: 15px; /* Tamanho ajustado */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.menu-item:hover {
+  background: #f0f2f5; /* Fundo mais suave */
+}
+
+.menu-item.active {
+  background: #e8f0fe;
+  color: #1a73e8;
+  border-right: 4px solid #1a73e8; /* Borda mais grossa */
+}
+
+.menu-item i {
+  width: 24px; /* Ícone maior */
+  margin-right: 16px; /* Mais espaçamento */
+  font-size: 18px; /* Ícone maior */
+}
+
+.menu-divider {
+  height: 1px;
+  background: #e0e0e0; /* Cor mais suave */
+  margin: 12px 0; /* Mais espaçamento */
+}
+
+.menu-section-title {
+  padding: 16px 24px 12px; /* Mais padding */
+  color: #9aa0a6; /* Cor mais suave */
+  font-size: 13px; /* Tamanho ajustado */
+  font-weight: 600; /* Mais negrito */
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Albums Menu List */
+#albums-menu-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.album-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px 12px 48px; /* Padding ajustado para indentação */
+  border: none;
+  background: none;
+  color: #5f6368;
+  font-size: 14px; /* Tamanho ajustado */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  border-left: 4px solid transparent; /* Borda mais grossa */
+}
+
+.album-menu-item:hover {
+  background: #f0f2f5;
+  color: #1a1a1a;
+}
+
+.album-menu-item.active {
+  background: #e8f0fe;
+  color: #1a73e8;
+  border-left-color: #1a73e8;
+}
+
+.album-menu-item i {
+  width: 18px; /* Ícone maior */
+  margin-right: 12px; /* Mais espaçamento */
+  font-size: 16px; /* Ícone maior */
+}
+
+.album-menu-item .album-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.album-menu-item .image-count {
+  font-size: 12px; /* Tamanho ajustado */
+  color: #5f6368;
+  background: #e0e0e0; /* Fundo mais suave */
+  padding: 3px 8px; /* Padding ajustado */
+  border-radius: 12px; /* Bordas mais arredondadas */
+  margin-left: 10px; /* Mais espaçamento */
+}
+
+.empty-albums-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px; /* Mais padding */
+  color: #9aa0a6; /* Cor mais suave */
+  font-size: 14px; /* Tamanho ajustado */
+  text-align: center;
+}
+
+.empty-albums-menu i {
+  font-size: 32px; /* Ícone maior */
+  margin-bottom: 12px; /* Mais espaçamento */
+  color: #e0e0e0;
+}
+
+/* Responsive - Show menu toggle on mobile */
+@media (max-width: 768px) {
+  .header-content {
+    height: 64px; /* Altura menor em mobile */
+    padding: 0 16px;
+  }
+  .header-left {
+    min-height: 64px;
+  }
+  .header-left h1 {
+    /* Ajuste para mobile */
+    font-size: 18px;
+  }
+  .menu-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  .menu-button i {
+    font-size: 16px;
+  }
+  .dashboard-nav {
+    padding: 0 16px;
+    top: 64px;
+  }
+  .nav-btn {
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+  .dashboard-section {
+    padding: 24px 16px;
+  }
+  .section-header h2 {
+    font-size: 24px;
+  }
+  .btn-primary,
+  .btn-outline {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .images-grid,
+  .albums-grid {
+    column-count: 1;
+    gap: 16px;
+  }
+  .image-card,
+  .album-card {
+    border-radius: 12px;
+  }
+  .card-content {
+    padding: 16px;
+  }
+  .card-title {
+    font-size: 16px;
+  }
+  .card-description {
+    font-size: 13px;
+  }
+  .card-date {
+    font-size: 12px;
+  }
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .empty-state {
+    padding: 60px 16px;
+  }
+  .empty-state i {
+    font-size: 64px;
+  }
+  .empty-state h3 {
+    font-size: 18px;
+  }
+  .empty-state p {
+    font-size: 14px;
+  }
+  .modal-content {
+    max-width: 95%;
+  }
+  .modal-header {
+    padding: 20px 20px 0;
+  }
+  .modal-header h3 {
+    font-size: 18px;
+  }
+  .modal form {
+    padding: 0 20px 20px;
+  }
+  .sidebar-content {
+    width: 260px;
+  }
+  .sidebar-header {
+    padding: 20px;
+  }
+  .sidebar-header h3 {
+    font-size: 18px;
+  }
+  .user-info-sidebar {
+    padding: 16px 20px;
+    gap: 10px;
+  }
+  .user-info-sidebar .user-name {
+    font-size: 15px;
+  }
+  .sidebar-nav {
+    padding: 16px 0;
+  }
+  .menu-item {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+  .menu-item i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 16px;
+  }
+  .menu-section-title {
+    padding: 14px 20px 10px;
+    font-size: 12px;
+  }
+  .album-menu-item {
+    padding: 10px 20px 10px 40px;
+    font-size: 13px;
+  }
+  .album-menu-item i {
+    width: 16px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  .empty-albums-menu {
+    padding: 20px;
+    font-size: 13px;
+  }
+  .empty-albums-menu i {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0 12px;
+  }
+  .header-left h1 {
+    /* Ajuste para mobile */
+    font-size: 16px;
+  }
+  .menu-button {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+  .menu-button i {
+    font-size: 14px;
+  }
+  .dashboard-nav {
+    padding: 0 12px;
+  }
+  .nav-btn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  .dashboard-section {
+    padding: 20px 12px;
+  }
+  .section-header h2 {
+    font-size: 20px;
+  }
+  .btn-primary,
+  .btn-outline {
+    padding: 10px 16px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+  .images-grid,
+  .albums-grid {
+    column-count: 1;
+    gap: 12px;
+  }
+  .image-card,
+  .album-card {
+    border-radius: 10px;
+  }
+  .card-content {
+    padding: 12px;
+  }
+  .card-title {
+    font-size: 15px;
+  }
+  .card-description {
+    font-size: 12px;
+  }
+  .card-date {
+    font-size: 11px;
+  }
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .empty-state {
+    padding: 40px 12px;
+  }
+  .empty-state i {
+    font-size: 48px;
+  }
+  .empty-state h3 {
+    font-size: 16px;
+  }
+  .empty-state p {
+    font-size: 13px;
+  }
+  .modal-content {
+    padding: 16px;
+  }
+  .modal-header {
+    padding: 16px 16px 0;
+  }
+  .modal-header h3 {
+    font-size: 16px;
+  }
+  .modal form {
+    padding: 0 16px 16px;
+  }
+  .sidebar-content {
+    width: 240px;
+  }
+  .sidebar-header {
+    padding: 16px;
+  }
+  .sidebar-header h3 {
+    font-size: 16px;
+  }
+  .user-info-sidebar {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .user-info-sidebar .user-name {
+    font-size: 14px;
+  }
+  .sidebar-nav {
+    padding: 12px 0;
+  }
+  .menu-item {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  .menu-item i {
+    width: 18px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  .menu-section-title {
+    padding: 12px 16px 8px;
+    font-size: 11px;
+  }
+  .album-menu-item {
+    padding: 8px 16px 8px 32px;
+    font-size: 12px;
+  }
+  .album-menu-item i {
+    width: 14px;
+    margin-right: 8px;
+    font-size: 12px;
+  }
+  .empty-albums-menu {
+    padding: 16px;
+    font-size: 12px;
+  }
+  .empty-albums-menu i {
+    font-size: 20px;
+  }
+}

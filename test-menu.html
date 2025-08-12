@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Menu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 0 20px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-toggle {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 2px solid #dadce0;
+            font-size: 18px;
+            color: #1a1a1a;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            margin-right: 12px;
+        }
+        
+        .menu-toggle:hover {
+            background: #e8eaed;
+        }
+        
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1001;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-menu.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .sidebar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .sidebar-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            padding: 20px;
+        }
+        
+        .sidebar-menu.active .sidebar-content {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button id="menu-toggle" class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1>Teste Menu</h1>
+    </div>
+    
+    <div id="sidebar-menu" class="sidebar-menu">
+        <div class="sidebar-overlay"></div>
+        <div class="sidebar-content">
+            <h3>Menu Lateral</h3>
+            <p>Menu funcionando!</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menu-toggle')
+            const sidebar = document.getElementById('sidebar-menu')
+            const overlay = document.querySelector('.sidebar-overlay')
+            
+            console.log('Menu toggle:', menuToggle)
+            console.log('Sidebar:', sidebar)
+            
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', () => {
+                    console.log('Menu clicado!')
+                    sidebar.classList.toggle('active')
+                })
+                
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active')
+                })
+            }
+        })
+    </script>
+</body>
+</html>
