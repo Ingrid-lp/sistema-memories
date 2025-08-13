@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Plus, Edit, Trash2, Calendar } from "lucide-react"
+import { Plus, Edit, Trash2, Calendar, Hand, X } from "lucide-react"
 
 interface ImageData {
   id: string
@@ -27,6 +27,8 @@ export default function ImageManager() {
   const [images, setImages] = useState<ImageData[]>([])
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [editingImage, setEditingImage] = useState<ImageData | null>(null)
+  const [selectedImage, setSelectedImage] = useState<ImageData | null>(null)
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -87,6 +89,7 @@ export default function ImageManager() {
       date: image.date || "",
       imageFile: null,
     })
+    setSelectedImage(null)
   }
 
   const handleUpdateImage = () => {
@@ -116,7 +119,13 @@ export default function ImageManager() {
       const filteredImages = allImages.filter((img: ImageData) => img.id !== imageId)
       localStorage.setItem("images", JSON.stringify(filteredImages))
       loadImages()
+      setSelectedImage(null)
     }
+  }
+
+  const handleOpenFullscreen = () => {
+    setIsFullscreenOpen(true)
+    setSelectedImage(null)
   }
 
   const resetForm = () => {
@@ -202,7 +211,7 @@ export default function ImageManager() {
               </svg>
             </div>
             <p className="text-gray-500 text-center">
-              Você ainda não adicionou nenhuma memória.
+              Você ainda não possui memórias
               <br />
               Clique em "Adicionar Memórias" para começar.
             </p>
@@ -216,33 +225,89 @@ export default function ImageManager() {
                 <img
                   src={image.imageUrl || "/placeholder.svg"}
                   alt={image.title || "Imagem"}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover cursor-pointer"
+                  onClick={() => setSelectedImage(image)}
                 />
               </div>
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  {image.title && <h3 className="font-semibold text-lg">{image.title}</h3>}
-                  {image.description && <p className="text-gray-600 text-sm">{image.description}</p>}
-                  {image.date && (
-                    <div className="flex items-center text-gray-500 text-sm">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(image.date).toLocaleDateString("pt-BR")}
-                    </div>
-                  )}
-                </div>
-                <div className="flex justify-end space-x-2 mt-4">
-                  <Button variant="outline" size="sm" onClick={() => handleEditImage(image)}>
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleDeleteImage(image.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
             </Card>
           ))}
         </div>
       )}
+
+      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="sm:max-w-2xl p-0">
+          {selectedImage && (
+            <div className="relative">
+              <img
+                src={selectedImage.imageUrl || "/placeholder.svg"}
+                alt={selectedImage.title || "Imagem"}
+                className="w-full h-auto max-h-96 object-cover"
+              />
+              <div className="absolute top-4 right-4 flex space-x-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="bg-white/90 hover:bg-white"
+                  onClick={() => handleEditImage(selectedImage)}
+                >
+                  <Edit className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="bg-white/90 hover:bg-white"
+                  onClick={() => handleDeleteImage(selectedImage.id)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="bg-white/90 hover:bg-white"
+                  onClick={handleOpenFullscreen}
+                >
+                  <Hand className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="p-6 bg-white">
+                <h3 className="text-xl font-semibold mb-2">{selectedImage.title || "Sem título"}</h3>
+                <div className="flex items-center text-gray-500 text-sm mb-4">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  Data: {selectedImage.date ? new Date(selectedImage.date).toLocaleDateString("pt-BR") : "Não colocado"}
+                </div>
+                <div className="text-gray-600">
+                  <p className="text-sm leading-relaxed">
+                    {selectedImage.description ||
+                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isFullscreenOpen} onOpenChange={setIsFullscreenOpen}>
+        <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 bg-black/95">
+          <div className="relative w-full h-full flex items-center justify-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
+              onClick={() => setIsFullscreenOpen(false)}
+            >
+              <X className="w-6 h-6" />
+            </Button>
+            {selectedImage && (
+              <img
+                src={selectedImage.imageUrl || "/placeholder.svg"}
+                alt={selectedImage.title || "Imagem"}
+                className="max-w-full max-h-full object-contain"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!editingImage} onOpenChange={() => setEditingImage(null)}>
         <DialogContent className="sm:max-w-md">

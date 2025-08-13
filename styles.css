@@ -841,276 +841,361 @@ body {
   color: #e0e0e0;
 }
 
-/* Responsive - Show menu toggle on mobile */
+/* Modal de Detalhes da Imagem */
+.image-details-content {
+  max-width: 600px;
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-details-header {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.details-image {
+  width: 100%;
+  height: auto;
+  max-height: 50vh;
+  object-fit: cover;
+  display: block;
+}
+
+.image-details-body {
+  padding: 24px;
+  background: white;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.details-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5f6368;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.details-date i {
+  font-size: 14px;
+}
+
+.details-divider {
+  text-align: center;
+  color: #9aa0a6;
+  font-size: 18px;
+  margin: 16px 0;
+  letter-spacing: 4px;
+}
+
+.details-description {
+  color: #5f6368;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+/* Revertendo botões para a parte inferior do modal */
+.image-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e8eaed;
+  margin-top: 16px;
+}
+
+.btn-action {
+  padding: 10px 16px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  background: white;
+  color: #5f6368;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+}
+
+.btn-action:hover {
+  background: #f8f9fa;
+  border-color: #1a73e8;
+  color: #1a73e8;
+}
+
+.btn-action i {
+  font-size: 18px;
+}
+
+/* Modal de Tela Cheia */
+.fullscreen-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 0;
+}
+
+.fullscreen-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  z-index: 2001;
+}
+
+.fullscreen-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.fullscreen-image {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Responsividade para modais de detalhes */
 @media (max-width: 768px) {
-  .header-content {
-    height: 64px; /* Altura menor em mobile */
-    padding: 0 16px;
+  .image-details-content {
+    max-width: 95%;
+    margin: 20px;
+    max-height: 85vh;
   }
-  .header-left {
-    min-height: 64px;
+
+  .details-image {
+    max-height: 40vh;
   }
-  .header-left h1 {
-    /* Ajuste para mobile */
-    font-size: 18px;
+
+  .image-details-body {
+    padding: 20px;
   }
-  .menu-button {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
+
+  .image-details-body h3 {
+    font-size: 20px;
   }
-  .menu-button i {
-    font-size: 16px;
-  }
-  .dashboard-nav {
-    padding: 0 16px;
-    top: 64px;
-  }
-  .nav-btn {
-    padding: 14px 20px;
+
+  .details-description {
     font-size: 14px;
   }
-  .dashboard-section {
-    padding: 24px 16px;
-  }
-  .section-header h2 {
-    font-size: 24px;
-  }
-  .btn-primary,
-  .btn-outline {
-    padding: 12px 20px;
-    font-size: 14px;
-    min-height: 44px;
-  }
-  .images-grid,
-  .albums-grid {
-    column-count: 1;
-    gap: 16px;
-  }
-  .image-card,
-  .album-card {
-    border-radius: 12px;
-  }
-  .card-content {
-    padding: 16px;
-  }
-  .card-title {
-    font-size: 16px;
-  }
-  .card-description {
-    font-size: 13px;
-  }
-  .card-date {
-    font-size: 12px;
-  }
-  .btn-icon {
+
+  .btn-action {
     width: 36px;
     height: 36px;
   }
-  .empty-state {
-    padding: 60px 16px;
-  }
-  .empty-state i {
-    font-size: 64px;
-  }
-  .empty-state h3 {
-    font-size: 18px;
-  }
-  .empty-state p {
+
+  .btn-action i {
     font-size: 14px;
   }
-  .modal-content {
-    max-width: 95%;
-  }
-  .modal-header {
-    padding: 20px 20px 0;
-  }
-  .modal-header h3 {
-    font-size: 18px;
-  }
-  .modal form {
-    padding: 0 20px 20px;
-  }
-  .sidebar-content {
-    width: 260px;
-  }
-  .sidebar-header {
-    padding: 20px;
-  }
-  .sidebar-header h3 {
-    font-size: 18px;
-  }
-  .user-info-sidebar {
-    padding: 16px 20px;
-    gap: 10px;
-  }
-  .user-info-sidebar .user-name {
-    font-size: 15px;
-  }
-  .sidebar-nav {
-    padding: 16px 0;
-  }
-  .menu-item {
-    padding: 12px 20px;
-    font-size: 14px;
-  }
-  .menu-item i {
-    width: 20px;
-    margin-right: 12px;
-    font-size: 16px;
-  }
-  .menu-section-title {
-    padding: 14px 20px 10px;
-    font-size: 12px;
-  }
-  .album-menu-item {
-    padding: 10px 20px 10px 40px;
-    font-size: 13px;
-  }
-  .album-menu-item i {
-    width: 16px;
-    margin-right: 10px;
-    font-size: 14px;
-  }
-  .empty-albums-menu {
-    padding: 20px;
-    font-size: 13px;
-  }
-  .empty-albums-menu i {
-    font-size: 24px;
+
+  .fullscreen-close {
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .header-content {
-    padding: 0 12px;
+  .image-details-content {
+    max-width: 100%;
+    margin: 10px;
+    border-radius: 12px;
   }
-  .header-left h1 {
-    /* Ajuste para mobile */
-    font-size: 16px;
+
+  .details-image {
+    max-height: 250px;
   }
-  .menu-button {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
+
+  .image-details-body {
+    padding: 16px;
   }
-  .menu-button i {
-    font-size: 14px;
+
+  .image-details-body h3 {
+    font-size: 18px;
   }
-  .dashboard-nav {
-    padding: 0 12px;
-  }
-  .nav-btn {
-    padding: 12px 16px;
+
+  .details-date {
     font-size: 13px;
   }
-  .dashboard-section {
-    padding: 20px 12px;
-  }
-  .section-header h2 {
-    font-size: 20px;
-  }
-  .btn-primary,
-  .btn-outline {
-    padding: 10px 16px;
+
+  .details-description {
     font-size: 13px;
-    min-height: 40px;
   }
-  .images-grid,
-  .albums-grid {
-    column-count: 1;
-    gap: 12px;
-  }
-  .image-card,
-  .album-card {
-    border-radius: 10px;
-  }
-  .card-content {
-    padding: 12px;
-  }
-  .card-title {
-    font-size: 15px;
-  }
-  .card-description {
-    font-size: 12px;
-  }
-  .card-date {
-    font-size: 11px;
-  }
-  .btn-icon {
+
+  .btn-action {
     width: 32px;
     height: 32px;
   }
-  .empty-state {
-    padding: 40px 12px;
-  }
-  .empty-state i {
-    font-size: 48px;
-  }
-  .empty-state h3 {
-    font-size: 16px;
-  }
-  .empty-state p {
-    font-size: 13px;
-  }
-  .modal-content {
-    padding: 16px;
-  }
-  .modal-header {
-    padding: 16px 16px 0;
-  }
-  .modal-header h3 {
-    font-size: 16px;
-  }
-  .modal form {
-    padding: 0 16px 16px;
-  }
-  .sidebar-content {
-    width: 240px;
-  }
-  .sidebar-header {
-    padding: 16px;
-  }
-  .sidebar-header h3 {
-    font-size: 16px;
-  }
-  .user-info-sidebar {
-    padding: 12px 16px;
-    gap: 8px;
-  }
-  .user-info-sidebar .user-name {
-    font-size: 14px;
-  }
-  .sidebar-nav {
-    padding: 12px 0;
-  }
-  .menu-item {
-    padding: 10px 16px;
-    font-size: 13px;
-  }
-  .menu-item i {
-    width: 18px;
-    margin-right: 10px;
-    font-size: 14px;
-  }
-  .menu-section-title {
-    padding: 12px 16px 8px;
-    font-size: 11px;
-  }
-  .album-menu-item {
-    padding: 8px 16px 8px 32px;
+
+  .btn-action i {
     font-size: 12px;
   }
-  .album-menu-item i {
-    width: 14px;
-    margin-right: 8px;
-    font-size: 12px;
+
+  .fullscreen-close {
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
-  .empty-albums-menu {
-    padding: 16px;
-    font-size: 12px;
+}
+
+/* Adicionando estilos para seleção múltipla de imagens */
+.image-selection-modal {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: 800px;
+}
+
+.image-selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 0;
+}
+
+.image-selection-header h3 {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.image-selection-header .btn-primary {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.modal-body {
+  padding: 20px 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.image-selection-grid {
+  column-count: 1;
+  column-gap: 16px;
+  column-fill: balance;
+}
+
+@media (min-width: 640px) {
+  .image-selection-grid {
+    column-count: 2;
   }
-  .empty-albums-menu i {
-    font-size: 20px;
+}
+
+@media (min-width: 768px) {
+  .image-selection-grid {
+    column-count: 3;
   }
+}
+
+.image-selection-item {
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 16px;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.image-selection-item:hover {
+  transform: scale(1.02);
+}
+
+.image-selection-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.2s ease;
+}
+
+.image-selection-item:hover .image-overlay {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.image-selection-item.selected .image-overlay {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.image-checkbox {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 2px solid #d1d5db;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.image-selection-item.selected .image-checkbox {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.image-checkbox svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.image-selection-item.selected .image-checkbox svg {
+  opacity: 1;
 }

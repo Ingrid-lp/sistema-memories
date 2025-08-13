@@ -6,6 +6,7 @@ class MemoriasApp {
     this.editingAlbum = null
     this.authStep = "email" // 'email', 'register', 'login'
     this.userEmail = ""
+    this.selectedImageIds = [] // Adicionando selectedImageIds para armazenar imagens selecionadas
 
     // Inicializar AuthManager após garantir que as dependências estão carregadas
     this.initializeApp()
@@ -198,6 +199,13 @@ class MemoriasApp {
           this.openAlbumFromMenu(albumId)
         }
       })
+
+      const confirmAddButton = document.getElementById("confirm-add-images")
+      if (confirmAddButton) {
+        confirmAddButton.addEventListener("click", (e) => {
+          this.handleAddToAlbumSubmit(e)
+        })
+      }
     } catch (error) {
       console.error("Erro ao configurar event listeners:", error)
     }
@@ -472,20 +480,13 @@ class MemoriasApp {
           <div class="image-preview-container">
               <img src="${image.imageUrl}" alt="${image.title || "Imagem"}" />
           </div>
-          <div class="card-content">
-              ${image.title ? `<h3 class="card-title">${image.title}</h3>` : ""}
-              ${image.description ? `<p class="card-description">${image.description}</p>` : ""}
-              ${image.date ? `<div class="card-date"><i class="fas fa-calendar"></i> ${this.formatDate(image.date)}</div>` : ""}
-              <div class="card-actions">
-                  <button class="btn-icon" onclick="app.editImage('${image.id}')">
-                      <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn-icon danger" onclick="app.deleteImage('${image.id}')">
-                      <i class="fas fa-trash"></i>
-                  </button>
-              </div>
-          </div>
       `
+
+    const imageElement = card.querySelector("img")
+    if (imageElement) {
+      imageElement.style.cursor = "pointer"
+      imageElement.addEventListener("click", () => this.openImageDetails(image))
+    }
 
     return card
   }
@@ -556,9 +557,11 @@ class MemoriasApp {
     if (!this.currentAlbum) return
 
     const modal = document.getElementById("add-to-album-modal")
-    const select = document.getElementById("select-image")
+    const grid = document.getElementById("image-selection-grid")
+    const noImagesDiv = document.getElementById("no-available-images")
+    const confirmButton = document.getElementById("confirm-add-images")
 
-    if (!modal || !select) return
+    if (!modal || !grid) return
 
     const user = this.authManager.getCurrentUser()
     const allImages = StorageManager.getImages(user.id)
@@ -566,143 +569,78 @@ class MemoriasApp {
       (img) => !this.currentAlbum.imageIds || !this.currentAlbum.imageIds.includes(img.id),
     )
 
-    select.innerHTML = '<option value="">Escolha uma imagem</option>'
-    availableImages.forEach((image) => {
-      const option = document.createElement("option")
-      option.value = image.id
-      option.textContent = image.title || `Imagem ${image.id}`
-      select.appendChild(option)
-    })
+    this.selectedImageIds = []
+    if (confirmButton) confirmButton.disabled = true
+
+    if (availableImages.length === 0) {
+      grid.innerHTML = ""
+      if (noImagesDiv) noImagesDiv.classList.remove("hidden")
+    } else {
+      if (noImagesDiv) noImagesDiv.classList.add("hidden")
+
+      grid.innerHTML = ""
+      availableImages.forEach((image) => {
+        const imageItem = document.createElement("div")
+        imageItem.className = "image-selection-item"
+        imageItem.dataset.imageId = image.id
+
+        imageItem.innerHTML = `
+          <img src="${image.imageUrl || "/placeholder.svg"}" alt="${image.title || "Imagem"}" />
+          <div class="image-overlay"></div>
+          <div class="image-checkbox">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        `
+
+        imageItem.addEventListener("click", () => this.toggleImageSelection(image.id))
+        grid.appendChild(imageItem)
+      })
+    }
 
     modal.classList.remove("hidden")
   }
 
-  async handleImageSubmit(e) {
-    e.preventDefault()
+  toggleImageSelection(imageId) {
+    if (!this.selectedImageIds) this.selectedImageIds = []
 
-    try {
-      const fileInput = document.getElementById("image-file")
-      const file = fileInput?.files[0]
+    const index = this.selectedImageIds.indexOf(imageId)
+    const imageItem = document.querySelector(`[data-image-id="${imageId}"]`)
+    const confirmButton = document.getElementById("confirm-add-images")
 
-      if (!file) {
-        alert("Por favor, selecione uma imagem")
-        return
-      }
-
-      this.setButtonLoading("image-form", true)
-
-      const imageUrl = await this.fileToBase64(file)
-      const user = this.authManager.getCurrentUser()
-
-      const image = {
-        id: Date.now().toString(),
-        userId: user.id,
-        title: document.getElementById("image-title")?.value || null,
-        description: document.getElementById("image-description")?.value || null,
-        date: document.getElementById("image-date")?.value || null,
-        imageUrl: imageUrl,
-        createdAt: new Date().toISOString(),
-      }
-
-      if (StorageManager.saveImage(image)) {
-        this.closeModals()
-        this.loadImages()
-      } else {
-        alert("Erro ao salvar imagem")
-      }
-    } catch (error) {
-      console.error("Erro ao processar imagem:", error)
-      alert("Erro ao processar imagem")
-    }
-
-    this.setButtonLoading("image-form", false)
-  }
-
-  handleEditImageSubmit(e) {
-    e.preventDefault()
-
-    if (!this.editingImage) return
-
-    const updates = {
-      title: document.getElementById("edit-image-title")?.value || null,
-      description: document.getElementById("edit-image-description")?.value || null,
-      date: document.getElementById("edit-image-date")?.value || null,
-    }
-
-    if (StorageManager.updateImage(this.editingImage, updates)) {
-      this.closeModals()
-      this.loadImages()
-      if (this.currentAlbum) {
-        this.loadAlbumImages()
-      }
+    if (index > -1) {
+      this.selectedImageIds.splice(index, 1)
+      if (imageItem) imageItem.classList.remove("selected")
     } else {
-      alert("Erro ao atualizar imagem")
-    }
-  }
-
-  handleAlbumSubmit(e) {
-    e.preventDefault()
-
-    const title = document.getElementById("album-title-input")?.value
-
-    if (!title?.trim()) {
-      alert("Título é obrigatório")
-      return
+      this.selectedImageIds.push(imageId)
+      if (imageItem) imageItem.classList.add("selected")
     }
 
-    this.setButtonLoading("album-form", true)
-
-    if (this.editingAlbum) {
-      if (StorageManager.updateAlbum(this.editingAlbum, { title: title.trim() })) {
-        this.closeModals()
-        this.loadAlbums()
-        if (this.currentAlbum && this.currentAlbum.id === this.editingAlbum) {
-          this.currentAlbum.title = title.trim()
-          const albumTitle = document.getElementById("album-title")
-          if (albumTitle) albumTitle.textContent = title.trim()
-        }
-      } else {
-        alert("Erro ao atualizar álbum")
-      }
-    } else {
-      const user = this.authManager.getCurrentUser()
-      const album = {
-        id: Date.now().toString(),
-        userId: user.id,
-        title: title.trim(),
-        imageIds: [],
-        createdAt: new Date().toISOString(),
-      }
-
-      if (StorageManager.saveAlbum(album)) {
-        this.closeModals()
-        this.loadAlbums()
-      } else {
-        alert("Erro ao criar álbum")
-      }
+    if (confirmButton) {
+      confirmButton.disabled = this.selectedImageIds.length === 0
     }
-
-    this.setButtonLoading("album-form", false)
   }
 
   handleAddToAlbumSubmit(e) {
     e.preventDefault()
 
-    const imageId = document.getElementById("select-image")?.value
-
-    if (!imageId || !this.currentAlbum) {
-      alert("Por favor, selecione uma imagem")
+    if (!this.selectedImageIds || this.selectedImageIds.length === 0) {
+      alert("Selecione pelo menos uma imagem")
       return
     }
 
-    const updatedImageIds = [...(this.currentAlbum.imageIds || []), imageId]
+    if (!this.currentAlbum) return
+
+    const updatedImageIds = [...(this.currentAlbum.imageIds || []), ...this.selectedImageIds]
 
     if (StorageManager.updateAlbum(this.currentAlbum.id, { imageIds: updatedImageIds })) {
       this.currentAlbum.imageIds = updatedImageIds
       this.closeModals()
       this.loadAlbumImages()
+      this.selectedImageIds = []
     } else {
-      alert("Erro ao adicionar imagem ao álbum")
+      alert("Erro ao adicionar imagens ao álbum")
     }
   }
 
@@ -841,20 +779,13 @@ class MemoriasApp {
           <div class="image-preview-container">
               <img src="${image.imageUrl}" alt="${image.title || "Imagem"}" />
           </div>
-          <div class="card-content">
-              ${image.title ? `<h3 class="card-title">${image.title}</h3>` : ""}
-              ${image.description ? `<p class="card-description">${image.description}</p>` : ""}
-              ${image.date ? `<div class="card-date"><i class="fas fa-calendar"></i> ${this.formatDate(image.date)}</div>` : ""}
-              <div class="card-actions">
-                  <button class="btn-icon" onclick="app.editImage('${image.id}')">
-                      <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn-icon danger" onclick="app.removeImageFromAlbum('${image.id}')">
-                      <i class="fas fa-trash"></i>
-                  </button>
-              </div>
-          </div>
       `
+
+    const imageElement = card.querySelector("img")
+    if (imageElement) {
+      imageElement.style.cursor = "pointer"
+      imageElement.addEventListener("click", () => this.openImageDetails(image))
+    }
 
     return card
   }
@@ -898,6 +829,7 @@ class MemoriasApp {
 
     this.editingImage = null
     this.editingAlbum = null
+    this.selectedImageIds = [] // Resetando selectedImageIds ao fechar modais
 
     const forms = ["image-form", "edit-image-form", "album-form", "add-to-album-form"]
     forms.forEach((formId) => {
@@ -1088,6 +1020,214 @@ class MemoriasApp {
     }
 
     this.updateMenuState()
+  }
+
+  openImageDetails(image) {
+    const modal = document.getElementById("image-details-modal")
+    const detailsImage = document.getElementById("details-image")
+    const detailsTitle = document.getElementById("details-title")
+    const detailsDate = document.getElementById("details-date")
+    const detailsDescription = document.getElementById("details-description")
+
+    // Configurar imagem
+    detailsImage.src = image.imageUrl
+    detailsImage.alt = image.title || "Imagem"
+
+    // Configurar título
+    detailsTitle.textContent = image.title || "Sem título"
+
+    // Configurar data
+    const dateSpan = detailsDate.querySelector("span")
+    if (image.date) {
+      dateSpan.textContent = `Data: ${this.formatDate(image.date)}`
+    } else {
+      dateSpan.textContent = "Data: Não colocado"
+    }
+
+    detailsDescription.textContent = image.description || "Sem descrição"
+
+    // Configurar botões
+    const editBtn = document.getElementById("edit-image-details")
+    const deleteBtn = document.getElementById("delete-image-details")
+    const fullscreenBtn = document.getElementById("fullscreen-image-details")
+
+    editBtn.onclick = () => {
+      modal.classList.add("hidden")
+      this.editImage(image.id)
+    }
+
+    deleteBtn.onclick = () => {
+      modal.classList.add("hidden")
+      this.deleteImage(image.id)
+    }
+
+    fullscreenBtn.onclick = () => {
+      this.openFullscreen(image)
+    }
+
+    modal.classList.remove("hidden")
+  }
+
+  openFullscreen(image) {
+    const modal = document.getElementById("fullscreen-modal")
+    const fullscreenImage = document.getElementById("fullscreen-image")
+    const closeBtn = document.getElementById("close-fullscreen")
+
+    fullscreenImage.src = image.imageUrl
+    fullscreenImage.alt = image.title || "Imagem"
+
+    closeBtn.onclick = () => {
+      modal.classList.add("hidden")
+    }
+
+    // Fechar ao clicar no fundo
+    modal.onclick = (e) => {
+      if (e.target === modal) {
+        modal.classList.add("hidden")
+      }
+    }
+
+    modal.classList.remove("hidden")
+
+    // Fechar modal de detalhes se estiver aberto
+    const detailsModal = document.getElementById("image-details-modal")
+    detailsModal.classList.add("hidden")
+  }
+
+  async handleImageSubmit(e) {
+    e.preventDefault()
+
+    try {
+      const user = this.authManager.getCurrentUser()
+      if (!user) return
+
+      const fileInput = document.getElementById("image-file")
+      const titleInput = document.getElementById("image-title")
+      const descriptionInput = document.getElementById("image-description")
+      const dateInput = document.getElementById("image-date")
+
+      if (!fileInput.files[0]) {
+        alert("Por favor, selecione uma imagem")
+        return
+      }
+
+      this.setButtonLoading("image-form", true)
+
+      const imageUrl = await this.fileToBase64(fileInput.files[0])
+
+      const newImage = {
+        id: Date.now().toString(),
+        userId: user.id,
+        title: titleInput.value || undefined,
+        description: descriptionInput.value || undefined,
+        date: dateInput.value || undefined,
+        imageUrl: imageUrl,
+        createdAt: new Date().toISOString(),
+      }
+
+      if (StorageManager.saveImage(newImage)) {
+        this.loadImages()
+        this.closeModals()
+      } else {
+        alert("Erro ao salvar imagem")
+      }
+
+      this.setButtonLoading("image-form", false)
+    } catch (error) {
+      console.error("Erro ao adicionar imagem:", error)
+      alert("Erro ao adicionar imagem")
+      this.setButtonLoading("image-form", false)
+    }
+  }
+
+  async handleEditImageSubmit(e) {
+    e.preventDefault()
+
+    try {
+      if (!this.editingImage) return
+
+      const titleInput = document.getElementById("edit-image-title")
+      const descriptionInput = document.getElementById("edit-image-description")
+      const dateInput = document.getElementById("edit-image-date")
+
+      this.setButtonLoading("edit-image-form", true)
+
+      const updates = {
+        title: titleInput.value || undefined,
+        description: descriptionInput.value || undefined,
+        date: dateInput.value || undefined,
+      }
+
+      if (StorageManager.updateImage(this.editingImage, updates)) {
+        this.loadImages()
+        if (this.currentAlbum) {
+          this.loadAlbumImages()
+        }
+        this.closeModals()
+      } else {
+        alert("Erro ao atualizar imagem")
+      }
+
+      this.setButtonLoading("edit-image-form", false)
+    } catch (error) {
+      console.error("Erro ao editar imagem:", error)
+      alert("Erro ao editar imagem")
+      this.setButtonLoading("edit-image-form", false)
+    }
+  }
+
+  async handleAlbumSubmit(e) {
+    e.preventDefault()
+
+    try {
+      const user = this.authManager.getCurrentUser()
+      if (!user) return
+
+      const titleInput = document.getElementById("album-title-input")
+
+      if (!titleInput.value.trim()) {
+        alert("Por favor, digite um título para o álbum")
+        return
+      }
+
+      this.setButtonLoading("album-form", true)
+
+      if (this.editingAlbum) {
+        // Editando álbum existente
+        const updates = {
+          title: titleInput.value.trim(),
+        }
+
+        if (StorageManager.updateAlbum(this.editingAlbum, updates)) {
+          this.loadAlbums()
+          this.closeModals()
+        } else {
+          alert("Erro ao atualizar álbum")
+        }
+      } else {
+        // Criando novo álbum
+        const newAlbum = {
+          id: Date.now().toString(),
+          userId: user.id,
+          title: titleInput.value.trim(),
+          createdAt: new Date().toISOString(),
+          imageIds: [],
+        }
+
+        if (StorageManager.saveAlbum(newAlbum)) {
+          this.loadAlbums()
+          this.closeModals()
+        } else {
+          alert("Erro ao criar álbum")
+        }
+      }
+
+      this.setButtonLoading("album-form", false)
+    } catch (error) {
+      console.error("Erro ao processar álbum:", error)
+      alert("Erro ao processar álbum")
+      this.setButtonLoading("album-form", false)
+    }
   }
 }
 
